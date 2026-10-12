@@ -17,11 +17,12 @@ const VELOCITY = 100;
  * Start loading the piano samples for the given notes.
  * @param {BaseAudioContext} context
  * @param {{midi: number}[]} notes only these notes' samples are fetched
- * @param {{onProgress?: (p: {loaded: number, total: number}) => void}} [options]
+ * @param {{onProgress?: (p: {loaded: number, total: number}) => void, destination?: AudioNode}} [options]
+ *   destination is where the sound goes (default: the context output)
  * @returns {{ready: Promise<boolean>, isReady: () => boolean, noteOn: Function, noteOff: Function}}
  *   `ready` resolves to true when playable, false if loading failed.
  */
-export function loadPiano(context, notes, { onProgress } = {}) {
+export function loadPiano(context, notes, { onProgress, destination } = {}) {
   let piano = null;
 
   const ready = import(SMPLR_URL)
@@ -33,6 +34,7 @@ export function loadPiano(context, notes, { onProgress } = {}) {
         velocity: VELOCITY,
         notesToLoad: { notes: notes.map((n) => n.midi), velocityRange: [VELOCITY, VELOCITY] },
         onLoadProgress: onProgress,
+        destination,
       });
       await instrument.ready;
       piano = instrument;

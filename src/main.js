@@ -14,8 +14,12 @@ const held = new Set();
 // One shared audio context. The browser keeps it suspended until the first
 // touch/click, which audio.js resumes.
 const context = new (window.AudioContext || window.webkitAudioContext)();
-const synth = createSynth(context);
+// Master volume sits between both sound engines and the speakers.
+const master = context.createGain();
+master.connect(context.destination);
+const synth = createSynth(context, master);
 const piano = loadPiano(context, notes, {
+  destination: master,
   onProgress: ({ loaded, total }) => {
     soundStatus.textContent = `Loading piano sound… ${Math.round((loaded / total) * 100)}%`;
   },
@@ -43,6 +47,50 @@ const keyboard = createKeyboard(document.getElementById('piano'), notes, {
     player.noteOff(note);
     showHeld();
   },
+});
+
+// Settings: volume and note-name labels, remembered between visits.
+const volumeInput = document.getElementById('volume');
+const labelsInput = document.getElementById('labels');
+const pianoEl = document.getElementById('piano');
+
+function loadSetting(key, fallback) {
+  try {
+    return localStorage.getItem(key) ?? fallback;
+  } catch {
+    return fallback; // storage can be blocked (private mode, site data off)
+  }
+}
+
+function saveSetting(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    /* not remembering is fine */
+  }
+}
+
+function applyVolume() {
+  const level = Number(volumeInput.value) / 100;
+  master.gain.value = level * level; // squared: the slider feels even to the ear
+}
+
+function applyLabels() {
+  pianoEl.classList.toggle('hide-labels', !labelsInput.checked);
+}
+
+volumeInput.value = loadSetting('piano.volume', volumeInput.value);
+labelsInput.checked = loadSetting('piano.labels', 'on') === 'on';
+applyVolume();
+applyLabels();
+
+volumeInput.addEventListener('input', () => {
+  applyVolume();
+  saveSetting('piano.volume', volumeInput.value);
+});
+labelsInput.addEventListener('change', () => {
+  applyLabels();
+  saveSetting('piano.labels', labelsInput.checked ? 'on' : 'off');
 });
 
 // Guided songs: the next key to play is highlighted on the keyboard.

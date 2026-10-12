@@ -21,7 +21,8 @@ https://github.com/bluedragon-ctrl/Piano.
   are not penalised). Songs live in `src/songs.js`.
 - Input: mouse and touch via Pointer Events. No computer-keyboard input yet.
 - Look: clean, realistic piano on a dark background; note labels on by
-  default with a toggle.
+  default with a toggle. Volume and label settings are remembered in
+  localStorage (always wrapped in try/catch).
 
 ## Process
 - `main` is always playable; each merge deploys to Pages via GitHub Actions.
