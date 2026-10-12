@@ -15,8 +15,9 @@ const SILENCE = 0.0001;
 
 /**
  * @param {BaseAudioContext} [context] injectable for tests; defaults to a new AudioContext
+ * @param {AudioNode} [destination] where the sound goes; defaults to the context output
  */
-export function createSynth(context) {
+export function createSynth(context, destination) {
   let ctx = context ?? null;
   let master = null;
   let wave = null;
@@ -35,7 +36,7 @@ export function createSynth(context) {
     const compressor = ctx.createDynamicsCompressor();
     master = ctx.createGain();
     master.gain.value = 0.8;
-    master.connect(compressor).connect(ctx.destination);
+    master.connect(compressor).connect(destination ?? ctx.destination);
 
     const real = new Float32Array(HARMONICS.length + 1); // cosine terms stay 0
     const imag = new Float32Array([0, ...HARMONICS]);

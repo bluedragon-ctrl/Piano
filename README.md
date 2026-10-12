@@ -52,7 +52,7 @@ vendor/smplr/       vendored smplr library
 3. Sound — Web Audio synthesized tones, press/release, glissando
 4. Touch support — multi-touch, no scroll/zoom while playing
 5. Guided songs — pick a song, the next key to play lights up
-6. Polish — note labels toggle, volume slider
+6. Polish — volume slider, note-name toggle, visual tweaks (this step)
 
 ## Credits
 
