@@ -107,28 +107,51 @@ function updateWide() {
   fullscreenButton.textContent = full || wideByHand ? 'Exit full screen' : 'Full screen';
 }
 
+const fullscreenNote = document.getElementById('fullscreen-note');
+
+// Say why something did not work, so it can be reported (and fixed).
+function noteProblem(what, err) {
+  console.warn(what, err);
+  fullscreenNote.textContent = `${what}: ${err?.name ?? err}`;
+}
+
 fullscreenButton.addEventListener('click', async () => {
-  fullscreenButton.blur();
-  if (!canFullscreen) {
-    wideByHand = !wideByHand;
-    updateWide();
+  fullscreenNote.textContent = '';
+  const root = document.documentElement;
+
+  if (document.fullscreenElement) {
+    await document.exitFullscreen().catch((err) => noteProblem('Could not leave full screen', err));
     return;
   }
-  try {
-    if (document.fullscreenElement) {
-      await document.exitFullscreen();
-    } else {
-      await document.documentElement.requestFullscreen();
-      // Landscape gives the widest keys; not supported everywhere.
-      await screen.orientation?.lock?.('landscape').catch(() => {});
-    }
-  } catch {
-    wideByHand = !wideByHand; // full screen refused: still make the keys wide
+  if (!canFullscreen) {
+    // No element full screen here (iPhone Safari, in-app browsers): wide layout only.
+    wideByHand = !wideByHand;
     updateWide();
+    if (wideByHand) fullscreenNote.textContent = 'Full screen is not available in this browser';
+    return;
+  }
+  // Must be the first thing in the click handler to keep the user gesture.
+  try {
+    await root.requestFullscreen({ navigationUI: 'hide' });
+  } catch (err) {
+    noteProblem('Full screen refused', err);
+    return;
+  }
+  // Landscape gives the widest keys; many browsers only allow it in full screen.
+  try {
+    await screen.orientation.lock('landscape');
+  } catch (err) {
+    noteProblem('Could not lock landscape', err);
   }
 });
 document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement) screen.orientation?.unlock?.();
+  if (!document.fullscreenElement) {
+    try {
+      screen.orientation.unlock();
+    } catch {
+      /* nothing was locked */
+    }
+  }
   updateWide();
 });
 touchQuery.addEventListener('change', updateWide);
