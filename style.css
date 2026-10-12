@@ -14,7 +14,7 @@
 }
 
 body {
-  --chrome: 150px; /* vertical space used by title and status line */
+  --chrome: 200px; /* vertical space used by toolbar, title and status line */
   margin: 0;
   touch-action: manipulation; /* no double-tap zoom */
   overscroll-behavior: none; /* no pull-to-refresh bounce while playing */
@@ -34,6 +34,41 @@ main {
 #status {
   color: var(--muted);
   min-height: 1.5em;
+}
+
+/* ---------- Song selector ---------- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 10px;
+  margin-top: 12px;
+  min-height: 36px;
+}
+
+.toolbar select,
+.toolbar button {
+  font: inherit;
+  color: var(--fg);
+  background: #23262d;
+  border: 1px solid #3a3d46;
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+.toolbar button {
+  cursor: pointer;
+}
+
+.toolbar [hidden] {
+  display: none;
+}
+
+#progress {
+  color: var(--muted);
+  min-width: 12ch;
 }
 
 /* ---------- Keyboard ---------- */
@@ -73,6 +108,22 @@ main {
   background: linear-gradient(to bottom, #e4e4e4, var(--white-key) 12%);
   box-shadow: inset 0 -6px 0 #d8d8d8;
   transition: background 60ms, box-shadow 60ms;
+}
+
+.key.white.hint {
+  background: linear-gradient(to bottom, #ffe08a, #ffc93c 12%);
+  box-shadow: inset 0 -6px 0 #e0a800;
+  animation: pulse 0.9s ease-in-out infinite alternate;
+}
+
+.key.black.hint {
+  background: linear-gradient(to bottom, #000, #b8860b 85%, #ffc93c);
+  animation: pulse 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { filter: brightness(0.85); }
+  to { filter: brightness(1.2); }
 }
 
 .key.white.pressed {
@@ -130,7 +181,7 @@ main {
 /* Short landscape screens (phones): give the keys all the height. */
 @media (max-height: 500px) {
   body {
-    --chrome: 60px;
+    --chrome: 105px;
   }
 
   h1 {

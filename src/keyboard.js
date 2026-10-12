@@ -98,4 +98,18 @@ export function createKeyboard(container, notes, { onNoteOn = () => {}, onNoteOf
   window.addEventListener('pointercancel', (e) => end(e.pointerId));
   // Don't leave keys stuck if the window loses focus mid-press.
   window.addEventListener('blur', () => [...pointers.keys()].forEach(end));
+
+  let hinted = null;
+  return {
+    /** Highlight the key to play next (null clears the highlight). */
+    setHint(id) {
+      hinted?.el.classList.remove('hint');
+      hinted = id ? keyById.get(id) ?? null : null;
+      if (hinted) {
+        // Force a reflow so the pulse restarts when the same key comes up twice.
+        void hinted.el.offsetWidth;
+        hinted.el.classList.add('hint');
+      }
+    },
+  };
 }

@@ -16,7 +16,9 @@ https://github.com/bluedragon-ctrl/Piano.
   browsers are Chrome and Edge, so only Ogg is bundled. The Web Audio synth in
   `src/audio.js` plays while samples load and if loading fails.
 - Range: 2 octaves, C4–B5 (24 keys).
-- Free play only (no game mode yet).
+- Free play plus guided songs: a selector at the top picks a beginner song and
+  the next key to play is highlighted (notes in order, rhythm ignored, wrong keys
+  are not penalised). Songs live in `src/songs.js`.
 - Input: mouse and touch via Pointer Events. No computer-keyboard input yet.
 - Look: clean, realistic piano on a dark background; note labels on by
   default with a toggle.

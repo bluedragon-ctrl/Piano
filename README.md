@@ -31,6 +31,8 @@ src/notes.js        note names and frequencies
 src/keyboard.js     keyboard rendering and pointer input
 src/audio.js        Web Audio synthesizer (fallback sound)
 src/piano.js        sampled grand piano (smplr) and sound routing
+src/songs.js        beginner songs for the guided mode
+src/guide.js        guided-song logic (which note comes next)
 assets/piano/       16 piano samples (Ogg, ~1.4 MB)
 vendor/smplr/       vendored smplr library
 .github/workflows/  GitHub Pages deployment
@@ -49,7 +51,8 @@ vendor/smplr/       vendored smplr library
 2. Keyboard rendering — 2 octaves (C4–B5), visual key press
 3. Sound — Web Audio synthesized tones, press/release, glissando
 4. Touch support — multi-touch, no scroll/zoom while playing
-5. Polish — note labels toggle, volume slider
+5. Guided songs — pick a song, the next key to play lights up
+6. Polish — note labels toggle, volume slider
 
 ## Credits
 

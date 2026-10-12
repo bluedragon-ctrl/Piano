@@ -3,6 +3,8 @@ import { buildNotes } from './notes.js';
 import { createKeyboard } from './keyboard.js';
 import { createSynth } from './audio.js';
 import { loadPiano, createPlayer } from './piano.js';
+import { SONGS } from './songs.js';
+import { createGuide } from './guide.js';
 
 const notes = buildNotes(4, 5);
 const status = document.getElementById('status');
@@ -29,10 +31,11 @@ function showHeld() {
   status.textContent = held.size ? `Playing: ${[...held].join(' ')}` : 'Click a key';
 }
 
-createKeyboard(document.getElementById('piano'), notes, {
+const keyboard = createKeyboard(document.getElementById('piano'), notes, {
   onNoteOn: (note) => {
     held.add(note.id);
     player.noteOn(note);
+    guide.noteOn(note.id);
     showHeld();
   },
   onNoteOff: (note) => {
@@ -41,6 +44,27 @@ createKeyboard(document.getElementById('piano'), notes, {
     showHeld();
   },
 });
+
+// Guided songs: the next key to play is highlighted on the keyboard.
+const songSelect = document.getElementById('song');
+const restartButton = document.getElementById('restart');
+const progress = document.getElementById('progress');
+
+for (const song of SONGS) songSelect.add(new Option(song.title, song.id));
+
+const guide = createGuide(SONGS, ({ song, index, total, target, done }) => {
+  keyboard.setHint(target);
+  restartButton.hidden = song === null;
+  if (!song) progress.textContent = '';
+  else if (done) progress.textContent = 'Well done! 🎉';
+  else progress.textContent = `Next: ${target} · ${index + 1} / ${total}`;
+});
+
+songSelect.addEventListener('change', () => {
+  guide.select(songSelect.value || null);
+  songSelect.blur(); // keep keyboard focus off the dropdown while playing
+});
+restartButton.addEventListener('click', () => guide.restart());
 
 // iOS Safari unlocks audio only at the end of a touch, not at its start.
 window.addEventListener('pointerup', () => player.unlock());
