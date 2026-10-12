@@ -1,8 +1,10 @@
-// App entry point: builds the keyboard. Sound is added in a later PR.
+// App entry point: builds the keyboard and plays notes as keys are pressed.
 import { buildNotes } from './notes.js';
 import { createKeyboard } from './keyboard.js';
+import { createSynth } from './audio.js';
 
 const status = document.getElementById('status');
+const synth = createSynth();
 const held = new Set();
 
 function showHeld() {
@@ -12,10 +14,12 @@ function showHeld() {
 createKeyboard(document.getElementById('piano'), buildNotes(4, 5), {
   onNoteOn: (note) => {
     held.add(note.id);
+    synth.noteOn(note);
     showHeld();
   },
   onNoteOff: (note) => {
     held.delete(note.id);
+    synth.noteOff(note);
     showHeld();
   },
 });
