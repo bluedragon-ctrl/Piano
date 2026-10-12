@@ -24,4 +24,7 @@ createKeyboard(document.getElementById('piano'), buildNotes(4, 5), {
   },
 });
 
+// iOS Safari unlocks audio only at the end of a touch, not at its start.
+window.addEventListener('pointerup', () => synth.unlock());
+
 showHeld();
