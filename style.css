@@ -2,6 +2,11 @@
   --bg: #16181d;
   --fg: #e8e8ea;
   --muted: #9a9ca3;
+  --white-key: #fafafa;
+  --white-key-pressed: #cfe5ff;
+  --black-key: #1b1c20;
+  --black-key-pressed: #2f5f99;
+  --key-gap: #2a2c33;
 }
 
 * {
@@ -25,4 +30,71 @@ main {
 
 #status {
   color: var(--muted);
+  min-height: 1.5em;
+}
+
+/* ---------- Keyboard ---------- */
+
+.keyboard {
+  --white-w: calc(100% / var(--white-count));
+  --black-w: calc(var(--white-w) * 0.6);
+  position: relative;
+  display: flex;
+  width: 100%;
+  aspect-ratio: var(--white-count) / 4.6;
+  border-top: 6px solid #3a3d46;
+  border-radius: 4px 4px 8px 8px;
+  background: var(--key-gap);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none; /* no scrolling or zooming while playing */
+}
+
+.key {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.key.white {
+  flex: 1 1 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 0 1px;
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(to bottom, #e4e4e4, var(--white-key) 12%);
+  box-shadow: inset 0 -6px 0 #d8d8d8;
+  transition: background 60ms, box-shadow 60ms;
+}
+
+.key.white.pressed {
+  background: var(--white-key-pressed);
+  box-shadow: inset 0 -2px 0 #a9c9ee;
+}
+
+.key.black {
+  position: absolute;
+  top: 0;
+  left: calc(var(--pos) * var(--white-w) - var(--black-w) / 2);
+  z-index: 1;
+  width: var(--black-w);
+  height: 62%;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(to bottom, #000, var(--black-key) 85%, #3a3c44);
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.5);
+  transition: background 60ms, height 60ms;
+}
+
+.key.black.pressed {
+  height: 61%;
+  background: linear-gradient(to bottom, #000, var(--black-key-pressed) 85%, #4a7cbb);
+}
+
+.label {
+  margin-bottom: 10%;
+  font-size: clamp(9px, 1.4vw, 15px);
+  font-weight: 600;
+  color: #8a8c93;
+  pointer-events: none;
 }
