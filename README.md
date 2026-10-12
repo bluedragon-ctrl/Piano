@@ -29,7 +29,8 @@ style.css           styles
 src/main.js         app entry module
 src/notes.js        note names and frequencies
 src/keyboard.js     keyboard rendering and pointer input
-src/audio.js        Web Audio synthesizer (piano-like tones)
+src/audio.js        Web Audio synthesizer (fallback sound)
+src/piano.js        sampled grand piano (smplr) and sound routing
 .github/workflows/  GitHub Pages deployment
 ```
 
@@ -47,3 +48,10 @@ src/audio.js        Web Audio synthesizer (piano-like tones)
 3. Sound — Web Audio synthesized tones, press/release, glissando
 4. Touch support — multi-touch, no scroll/zoom while playing
 5. Polish — note labels toggle, volume slider
+
+## Credits
+
+- Piano sound: [smplr](https://github.com/danigb/smplr) (MIT) playing the
+  Splendid Grand Piano samples — a Steinway sample set that Akai released into
+  the public domain, converted by the
+  [sfzinstruments](https://github.com/sfzinstruments/SplendidGrandPiano) project.

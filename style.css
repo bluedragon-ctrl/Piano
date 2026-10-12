@@ -114,6 +114,12 @@ main {
   font-size: 0.9rem;
 }
 
+.note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
 /* Narrow portrait screens: 14 white keys get small, so suggest landscape. */
 @media (orientation: portrait) and (max-width: 700px) {
   #rotate-hint {
