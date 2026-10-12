@@ -8,6 +8,14 @@
   </head>
   <body>
     <main>
+      <div class="toolbar">
+        <label for="song">Song</label>
+        <select id="song">
+          <option value="">Free play</option>
+        </select>
+        <button id="restart" type="button" hidden>Restart</button>
+        <span id="progress" aria-live="polite"></span>
+      </div>
       <h1>Piano</h1>
       <div id="piano" aria-label="Piano keyboard"></div>
       <p id="status"></p>

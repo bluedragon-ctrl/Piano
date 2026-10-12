@@ -10,11 +10,15 @@ https://github.com/bluedragon-ctrl/Piano.
 
 ## Decisions
 - Plain HTML/CSS/JavaScript (ES modules), **no build step**, no dependencies.
-- Sound: sampled Steinway grand piano via the smplr library (pinned version, loaded
-  from jsDelivr as an ES module; samples fetched from smplr's public host). The Web
-  Audio synth in `src/audio.js` plays while samples load and if loading fails.
+- Sound: sampled Steinway grand piano via the smplr library. Both smplr
+  (`vendor/smplr`) and the 16 Ogg samples (`assets/piano`) are bundled in the repo,
+  so the site makes no third-party requests (work networks may block CDNs). Target
+  browsers are Chrome and Edge, so only Ogg is bundled. The Web Audio synth in
+  `src/audio.js` plays while samples load and if loading fails.
 - Range: 2 octaves, C4–B5 (24 keys).
-- Free play only (no game mode yet).
+- Free play plus guided songs: a selector at the top picks a beginner song and
+  the next key to play is highlighted (notes in order, rhythm ignored, wrong keys
+  are not penalised). Songs live in `src/songs.js`.
 - Input: mouse and touch via Pointer Events. No computer-keyboard input yet.
 - Look: clean, realistic piano on a dark background; note labels on by
   default with a toggle.

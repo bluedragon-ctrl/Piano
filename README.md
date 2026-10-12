@@ -31,6 +31,10 @@ src/notes.js        note names and frequencies
 src/keyboard.js     keyboard rendering and pointer input
 src/audio.js        Web Audio synthesizer (fallback sound)
 src/piano.js        sampled grand piano (smplr) and sound routing
+src/songs.js        beginner songs for the guided mode
+src/guide.js        guided-song logic (which note comes next)
+assets/piano/       16 piano samples (Ogg, ~1.4 MB)
+vendor/smplr/       vendored smplr library
 .github/workflows/  GitHub Pages deployment
 ```
 
@@ -47,11 +51,12 @@ src/piano.js        sampled grand piano (smplr) and sound routing
 2. Keyboard rendering — 2 octaves (C4–B5), visual key press
 3. Sound — Web Audio synthesized tones, press/release, glissando
 4. Touch support — multi-touch, no scroll/zoom while playing
-5. Polish — note labels toggle, volume slider
+5. Guided songs — pick a song, the next key to play lights up
+6. Polish — note labels toggle, volume slider
 
 ## Credits
 
-- Piano sound: [smplr](https://github.com/danigb/smplr) (MIT) playing the
+- Piano sound: [smplr](https://github.com/danigb/smplr) (MIT, vendored in `vendor/smplr`) playing the
   Splendid Grand Piano samples — a Steinway sample set that Akai released into
   the public domain, converted by the
   [sfzinstruments](https://github.com/sfzinstruments/SplendidGrandPiano) project.
