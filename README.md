@@ -29,6 +29,7 @@ style.css           styles
 src/main.js         app entry module
 src/notes.js        note names and frequencies
 src/keyboard.js     keyboard rendering and pointer input
+src/audio.js        Web Audio synthesizer (piano-like tones)
 .github/workflows/  GitHub Pages deployment
 ```
 
