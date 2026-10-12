@@ -1,8 +1,10 @@
 // Sampled grand piano via the smplr library, with the synth from audio.js as a
 // fallback while samples load (or if they cannot be loaded at all).
 
-// Pinned version, loaded as an ES module straight from the CDN (no build step).
-const SMPLR_URL = 'https://cdn.jsdelivr.net/npm/smplr@1.1.0/dist/index.mjs';
+// smplr and the samples are vendored in the repo, so the site makes no
+// third-party requests. Ogg only: Chrome, Edge and Firefox play it natively.
+const SMPLR_URL = new URL('../vendor/smplr/index.mjs', import.meta.url).href;
+const SAMPLES_URL = new URL('../assets/piano', import.meta.url).href;
 
 // How long a released key takes to fade out, in seconds.
 const RELEASE = 0.3;
@@ -25,6 +27,8 @@ export function loadPiano(context, notes, { onProgress } = {}) {
   const ready = import(SMPLR_URL)
     .then(async ({ SplendidGrandPiano }) => {
       const instrument = SplendidGrandPiano(context, {
+        baseUrl: SAMPLES_URL,
+        formats: ['ogg'],
         decayTime: RELEASE,
         velocity: VELOCITY,
         notesToLoad: { notes: notes.map((n) => n.midi), velocityRange: [VELOCITY, VELOCITY] },
