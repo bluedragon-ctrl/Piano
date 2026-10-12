@@ -93,6 +93,47 @@ labelsInput.addEventListener('change', () => {
   saveSetting('piano.labels', labelsInput.checked ? 'on' : 'off');
 });
 
+// Full screen / wide keyboard. The wide layout is used in full screen, on touch
+// devices, and when switched on by hand (iPhone Safari has no element full
+// screen, so the button only toggles the wide layout there).
+const fullscreenButton = document.getElementById('fullscreen');
+const touchQuery = window.matchMedia('(pointer: coarse)');
+const canFullscreen = Boolean(document.fullscreenEnabled);
+let wideByHand = false;
+
+function updateWide() {
+  const full = Boolean(document.fullscreenElement);
+  document.body.classList.toggle('wide', full || wideByHand || touchQuery.matches);
+  fullscreenButton.textContent = full || wideByHand ? 'Exit full screen' : 'Full screen';
+}
+
+fullscreenButton.addEventListener('click', async () => {
+  fullscreenButton.blur();
+  if (!canFullscreen) {
+    wideByHand = !wideByHand;
+    updateWide();
+    return;
+  }
+  try {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen();
+    } else {
+      await document.documentElement.requestFullscreen();
+      // Landscape gives the widest keys; not supported everywhere.
+      await screen.orientation?.lock?.('landscape').catch(() => {});
+    }
+  } catch {
+    wideByHand = !wideByHand; // full screen refused: still make the keys wide
+    updateWide();
+  }
+});
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) screen.orientation?.unlock?.();
+  updateWide();
+});
+touchQuery.addEventListener('change', updateWide);
+updateWide();
+
 // Guided songs: the next key to play is highlighted on the keyboard.
 const songSelect = document.getElementById('song');
 const restartButton = document.getElementById('restart');

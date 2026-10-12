@@ -188,6 +188,38 @@ h1 {
   pointer-events: none;
 }
 
+/* ---------- Wide layout (full screen, touch devices) ---------- */
+
+/* Edge-to-edge keyboard: the controls shrink to a thin strip on top and the
+   keys take the rest of the screen, as wide as the screen allows. */
+body.wide main {
+  width: 100%;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+body.wide .top {
+  padding: 4px 8px 0;
+}
+
+body.wide h1,
+body.wide #sound-status {
+  display: none;
+}
+
+body.wide #status {
+  margin: 4px 0;
+}
+
+body.wide .keyboard {
+  width: 100%;
+  height: min(100%, max(40vw, 320px));
+  aspect-ratio: auto;
+  align-self: end;
+  border-radius: 0;
+}
+
 /* ---------- Phones and tablets ---------- */
 
 #rotate-hint {

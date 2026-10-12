@@ -20,6 +20,9 @@ https://github.com/bluedragon-ctrl/Piano.
   the next key to play is highlighted (notes in order, rhythm ignored, wrong keys
   are not penalised). Songs live in `src/songs.js`.
 - Input: mouse and touch via Pointer Events. No computer-keyboard input yet.
+- Full screen button: real Fullscreen API where available (falls back to just the
+  wide layout, e.g. iPhone Safari). The wide layout (edge-to-edge keyboard, thin
+  control strip) is also the default on touch devices (`pointer: coarse`).
 - Look: clean, realistic piano on a dark background; note labels on by
   default with a toggle. Volume and label settings are remembered in
   localStorage (always wrapped in try/catch).
