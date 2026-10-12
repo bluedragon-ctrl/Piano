@@ -42,10 +42,18 @@ export function createSynth(context) {
     wave = ctx.createPeriodicWave(real, imag);
   }
 
-  /** Start a note. Call from a user gesture so the audio context may run. */
-  function noteOn(note) {
+  /**
+   * Make sure the audio context is running. iOS Safari only unlocks audio from
+   * the end of a touch (pointerup), so main.js also calls this on release.
+   */
+  function unlock() {
     setup();
     if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+  }
+
+  /** Start a note. Call from a user gesture so the audio context may run. */
+  function noteOn(note) {
+    unlock();
     stopVoice(note.id, 0.02); // restarting a note cuts the previous one quickly
 
     const now = ctx.currentTime;
@@ -91,5 +99,5 @@ export function createSynth(context) {
     };
   }
 
-  return { noteOn, noteOff };
+  return { noteOn, noteOff, unlock };
 }

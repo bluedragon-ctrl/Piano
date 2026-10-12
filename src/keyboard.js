@@ -80,8 +80,9 @@ export function createKeyboard(container, notes, { onNoteOn = () => {}, onNoteOf
   container.addEventListener('pointerdown', (e) => {
     if (e.button !== 0) return;
     e.preventDefault();
-    // Touch implicitly captures the pointer; release it so moves can slide to other keys.
-    if (container.hasPointerCapture(e.pointerId)) container.releasePointerCapture(e.pointerId);
+    // Touch implicitly captures the pointer to the touched key; release it so the
+    // finger can slide onto other keys.
+    if (e.target.hasPointerCapture?.(e.pointerId)) e.target.releasePointerCapture(e.pointerId);
     pointers.set(e.pointerId, null);
     moveTo(e.pointerId, keyAt(e.clientX, e.clientY));
   });
@@ -89,6 +90,9 @@ export function createKeyboard(container, notes, { onNoteOn = () => {}, onNoteOf
   window.addEventListener('pointermove', (e) => {
     if (pointers.has(e.pointerId)) moveTo(e.pointerId, keyAt(e.clientX, e.clientY));
   });
+
+  // A long press on touch screens would otherwise open the context menu.
+  container.addEventListener('contextmenu', (e) => e.preventDefault());
 
   window.addEventListener('pointerup', (e) => end(e.pointerId));
   window.addEventListener('pointercancel', (e) => end(e.pointerId));
