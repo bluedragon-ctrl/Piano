@@ -8,6 +8,7 @@
   </head>
   <body>
     <main>
+      <div class="top">
       <div class="toolbar">
         <label for="song">Song</label>
         <select id="song">
@@ -15,10 +16,6 @@
         </select>
         <button id="restart" type="button" hidden>Restart</button>
         <span id="progress" aria-live="polite"></span>
-      </div>
-      <h1>Piano</h1>
-      <div id="piano" aria-label="Piano keyboard"></div>
-      <div class="settings">
         <label class="setting">Volume
           <input id="volume" type="range" min="0" max="100" value="80" />
         </label>
@@ -27,9 +24,12 @@
           Note names
         </label>
       </div>
+      <h1>Piano</h1>
       <p id="status"></p>
       <p id="sound-status" class="note"></p>
       <p id="rotate-hint">Rotate your device for bigger keys</p>
+      </div>
+      <div id="piano" aria-label="Piano keyboard"></div>
     </main>
     <script type="module" src="src/main.js"></script>
   </body>
