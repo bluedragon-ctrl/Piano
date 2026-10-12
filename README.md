@@ -27,6 +27,8 @@ Then open http://localhost:8000 (or the port shown).
 index.html          page entry point
 style.css           styles
 src/main.js         app entry module
+src/notes.js        note names and frequencies
+src/keyboard.js     keyboard rendering and pointer input
 .github/workflows/  GitHub Pages deployment
 ```
 
